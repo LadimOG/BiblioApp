@@ -13,7 +13,7 @@ Route::get('/search-book', [BookController::class, 'search'])->name('search.book
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/book-add/{id}', [BookController::class, 'addBook'])->name('books.add');
+    Route::post('/book-add/{id}', [BookController::class, 'addBook'])->name('books.add');
 
     Route::get('/books-all', [BookController::class, 'getAllBooks'])->name('books.all');
 

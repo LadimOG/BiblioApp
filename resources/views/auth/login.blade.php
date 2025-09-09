@@ -2,9 +2,7 @@
 
 @section('title', 'Login')
 
-
 @section('content')
-
 
     <div class="flex flex-col w-[500px] p-full py-5 px-5 rounded-lg bg-slate-800">
         <h1 class="text-center font-bold text-2xl text-white mb-5">Connexion</h1>
@@ -15,7 +13,7 @@
                 <input type="email" name="email" id="email" placeholder="exemple@mail.com" class="rounded-md">
             </div>
             <div class="flex flex-col mb-4">
-                <label for="password" class="text-white font-bold mb-2">password</label>
+                <label for="password" class="text-white font-bold mb-2">mot de passe</label>
                 <input type="password" name="password" id="password" placeholder="mot de passe..." class="rounded-md">
             </div>
 

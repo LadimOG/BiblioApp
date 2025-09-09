@@ -11,7 +11,7 @@
         <form action="{{ route('search.books') }}" method="get" class="w-full">
             @csrf
             <div class="flex items-center w-full h mb-5 shadow-xl">
-                <input type="search" name="search" id="search" class="outline-indigo-400 bg-slate-300 rounded-s-lg border-none w-4/5" placeholder="Taper le nom du livre ou le nom de l'auteur...">
+                <input type="search" name="search" id="search" class="outline-indigo-400 bg-slate-300 rounded-s-lg border-none w-4/5" placeholder="Taper le nom du livre ou de l'auteur...">
 
                 <button type="submit" class="bg-blue-500 p-2 rounded-e-lg text-white w-1/4 " >Rechercher</button>
             </div>

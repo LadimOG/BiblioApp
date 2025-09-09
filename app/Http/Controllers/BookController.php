@@ -31,8 +31,12 @@ class BookController extends Controller
         return redirect()->route('home');
     }
 
-    public function addBook(string $id): RedirectResponse
+    public function addBook(string $id, Request $request): RedirectResponse
     {
+
+        $conditionValidated = $request->validate([
+            'condition' => 'required|string|in:bon,moyen,mauvais'
+        ]);
 
         $bookExisting = Book::where('google_books_id', $id)->exists();
 
@@ -52,7 +56,8 @@ class BookController extends Controller
             'published_year' => substr($bookData['volumeInfo']['publishedDate'] ?? 'N/A', 0, 4),
             'description' => strip_tags($bookData['volumeInfo']['description'] ?? null),
             'image_url' => $bookData['volumeInfo']['imageLinks']['smallThumbnail'] ?? null,
-            'google_books_id' => $bookData['id']
+            'google_books_id' => $bookData['id'],
+            'condition' => $conditionValidated['condition']
         ]);
 
         return redirect()->route('home')->with('success', 'Livre ajouté avec succès !');

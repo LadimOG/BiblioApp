@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen box-border">
     <header>
         <nav class="flex justify-between border border-y-1 shadow-md">
             <div class="flex  justify-center items-center ">
@@ -46,7 +46,7 @@
         @yield('content')
     </main>
 
-    <footer class=" border text-center h-1/5 ">
+    <footer class=" border text-center min-h-[70px]  flex justify-center items-center ">
         <div class="">
             <p>&copy; 2025 Mon application de livres</p>
         </div>
