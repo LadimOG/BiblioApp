@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Borrowing;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class BorrowingController extends Controller
 {
@@ -21,8 +24,11 @@ class BorrowingController extends Controller
      */
     public function create()
     {
+
+        $userConnect = Auth::id();
+        $users = User::select('id', 'name')->where('id', '!=', $userConnect)->get();
+
         $books = Book::all();
-        $users = User::select('id', 'name')->get();
         return view('emprunt_form', compact('books', 'users'));
     }
 
@@ -31,7 +37,23 @@ class BorrowingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'book_id' => 'require|exists:book,id'
+
+        ]);
+
+        $userId = $request->input('user_id');
+        $bookId = $request->input('book_id');
+        $dateEmprunt = now();
+        $dateRetour = $dateEmprunt->addMonth();
+
+        Borrowing::created([
+            'user_id' => $userId,
+            'book_id' => $bookId,
+            'borrowed_ad' => $dateEmprunt,
+            'due_date' => $dateRetour,
+        ]);
     }
 
     /**
