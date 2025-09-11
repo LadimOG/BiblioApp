@@ -18,7 +18,7 @@ class BookController extends Controller
         $this->googleBookService = $googleBookService;
     }
 
-    public function search(Request $request)
+    public function index(Request $request)
     {
         $query = $request->input('search');
 
@@ -31,8 +31,15 @@ class BookController extends Controller
         return redirect()->route('home');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function showBooks()
     {
+        $books = Book::all();
+        return view('books_bibliotheque', compact('books'));
+    }
+
+    public function store(Request $request)
+    {
+
 
         $conditionValidated = $request->validate([
             'condition' => 'required|string|in:bon,moyen,mauvais'
@@ -44,7 +51,9 @@ class BookController extends Controller
         $bookExisting = Book::where('google_books_id', $idBook)->exists();
 
         if ($bookExisting) {
-            return redirect()->route('home')->with('error', 'Ce livre est présent dans votre bibliothèque !');
+            return redirect()->back()->withErrors([
+                'error' => 'Ce livre est présent dans votre bibliothèque !'
+            ]);
         }
 
         try {
@@ -63,13 +72,7 @@ class BookController extends Controller
             'condition' => $conditionValidated['condition']
         ]);
 
-        return redirect()->route('home')->with('success', 'Livre ajouté avec succès !');
-    }
-
-    public function getAllBooks()
-    {
-        $books = Book::all();
-        return view('books_bibliotheque', compact('books'));
+        return redirect()->back()->with('success', 'Livre ajouté avec succès !');
     }
 
     public function deleteBookById(string $id): RedirectResponse

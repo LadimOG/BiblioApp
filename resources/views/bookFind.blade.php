@@ -6,6 +6,14 @@
 <div class="mt-9">
     <h1 class="text-center font-bold text-3xl mb-6 ">Résultats trouvés : <span class="text-cyan-700">{{ $query }}</span></h1>
 
+    @if (session('success'))
+        <p class="w-full bg-green-300 text-green-700 border border-green-700 p-3">{{session('success')}}</p>
+    @endif
+
+    @if ($errors->has('error'))
+            <p class="w-full bg-red-300 text-red-700 border border-red-700 p-3">{{ $errors->first('error')}}</p>
+    @endif
+
     @if (isset($books['items']) && !empty($books['items']))
 
         <div class="grid items-stretch h-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
@@ -37,9 +45,10 @@
                         </div>
 
 
-                        <form action="{{ route('books.add',['id'=>$book['id']] ) }}" method="post" >
+                        <form action="{{ route('book.store') }}" method="post" >
                         @csrf
                         <div class=" flex justify-center items-center gap-2">
+                            <input type="hidden" name="google_book_id" value="{{ $book['id'] }}">
                             <label class="font-bold text-slate-400" for="condition" >État du livre:</label>
                             <select name="condition" id="condition"
                              class="rounded-md bg-slate-500 text-white cursor-pointer" required>

@@ -10,14 +10,14 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/search-book', [BookController::class, 'search'])->name('search.books');
+Route::get('/search-book', [BookController::class, 'index'])->name('index.books');
 
 
 
 Route::middleware('auth')->group(function () {
-    Route::post('/book-store', [BookController::class, 'store'])->name('books.add');
+    Route::post('/book-store', [BookController::class, 'store'])->name('book.store');
 
-    Route::get('/books-all', [BookController::class, 'getAllBooks'])->name('books.all');
+    Route::get('/livres', [BookController::class, 'showBooks'])->name('books.all');
 
     Route::get('/delete_book/{id}', [BookController::class, 'deleteBookById'])->name('delete.book');
 

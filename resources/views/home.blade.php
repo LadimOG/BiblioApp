@@ -8,7 +8,8 @@
     <div class=" flex justify-center items-center flex-col w-[500px] ">
         <h1 class="font-bold mb-6 text-3xl">Cherchez votre livre</h1>
 
-        <form action="{{ route('search.books') }}" method="get" class="w-full">
+
+        <form action="{{ route('index.books') }}" method="get" class="w-full">
             @csrf
             <div class="flex items-center w-full h mb-5 shadow-xl">
                 <input type="search" name="search" id="search" class="outline-indigo-400 bg-slate-300 rounded-s-lg border-none w-4/5" placeholder="Taper le nom du livre ou de l'auteur...">
