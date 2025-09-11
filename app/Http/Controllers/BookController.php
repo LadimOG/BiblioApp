@@ -41,7 +41,7 @@ class BookController extends Controller
         $bookExisting = Book::where('google_books_id', $id)->exists();
 
         if ($bookExisting) {
-            return redirect()->route('home')->with('error', 'Ce livre est présent dans votre collection !');
+            return redirect()->route('home')->with('error', 'Ce livre est présent dans votre bibliothèque !');
         }
 
         try {
@@ -52,7 +52,7 @@ class BookController extends Controller
 
         $book = Book::create([
             'title' => $bookData['volumeInfo']['title'] ?? 'Titre inconnu',
-            'author' => implode(', ', $bookData['volumeInfo']['authors'] ?? []),
+            'author' => implode(', ', $bookData['volumeInfo']['authors'] ?? ['Auteur inconnu']),
             'published_year' => substr($bookData['volumeInfo']['publishedDate'] ?? 'N/A', 0, 4),
             'description' => strip_tags($bookData['volumeInfo']['description'] ?? null),
             'image_url' => $bookData['volumeInfo']['imageLinks']['smallThumbnail'] ?? null,
@@ -76,5 +76,11 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('books.all');
+    }
+
+    public function reserved()
+    {
+        $books = Book::all();
+        return view('reserved_books', compact('books'));
     }
 }

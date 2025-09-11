@@ -53,4 +53,5 @@
     </footer>
 </body>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+<script src="{{ asset('js/dateReservation.js')}}"></script>
 </html>

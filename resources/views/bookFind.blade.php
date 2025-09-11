@@ -22,8 +22,9 @@
                             </div>
                         @endif
                     </div>
-                    <div class="flex flex-col mt-5 min-h-[140px]">
-                        <h5 class="text-lg font-semibold text-white">{{$book['volumeInfo']['title'] ?? 'Aucun titre'}}</h5>
+                    <div class="flex flex-col mt-5 ">
+                        <div class="min-h-[140px]">
+                            <h5 class="text-lg font-semibold text-white">{{$book['volumeInfo']['title'] ?? 'Aucun titre'}}</h5>
 
                         <p class="text-white text-sm mb-2"><span class="font-bold text-slate-400">Description: </span>{{
                             substr($book['volumeInfo']['description'] ?? 'Aucune description',0,30).'...'}}
@@ -33,32 +34,35 @@
 
                         <p class="text-white text-sm mb-2"><span class="font-bold text-slate-400">Année: </span>{{substr($book['volumeInfo']['publishedDate'] ?? 'N/A', 0, 4)
                         }}</p>
-
-                        <form action="{{ route('books.add',['id'=>$book['id']] ) }}" method="post">
-                        @csrf
-                        <label class="font-bold text-slate-400" for="condition" >État du livre</label>
-                        <select name="condition" id="condition"
-                        class="rounded-md bg-slate-500 text-white cursor-pointer" required>
-                            <option value="">
-                                Sélectionner l'état du livre
-                            </option>
-                            <option value="bon">
-                            Bon
-                            </option>
-                            <option value="moyen">Moyen
-                            </option>
-                            <option value="mauvais">
-                            Mauvais
-                            </option>
-                        </select>
-
-                        <div class="mt-5">
-                            <button type="submit" class="inline-block p-4 bg-blue-600 w-1/2 rounded-md text-center font-bold text-white
-                            hover:bg-blue-500">
-                                Ajouter
-                            </button>
-
                         </div>
+
+
+                        <form action="{{ route('books.add',['id'=>$book['id']] ) }}" method="post" >
+                        @csrf
+                        <div class=" flex justify-center items-center gap-2">
+                            <label class="font-bold text-slate-400" for="condition" >État du livre:</label>
+                            <select name="condition" id="condition"
+                             class="rounded-md bg-slate-500 text-white cursor-pointer" required>
+                                <option value="">
+                                Sélectionner l'état du livre
+                                 </option>
+                                <option value="bon">
+                                Bon
+                                </option>
+                                <option value="moyen">Moyen
+                                 </option>
+                                <option value="mauvais">
+                                 Mauvais
+                                </option>
+                             </select>
+                        </div>
+
+                            <div class="mt-5  ">
+                                 <button type="submit" class="inline-block p-4 bg-blue-600 w-1/2 rounded-md text-center font-bold text-white
+                                 hover:bg-blue-500">
+                                Ajouter
+                                </button>
+                            </div>
                         </form>
                     </div>
 
