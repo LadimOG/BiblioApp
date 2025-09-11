@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/delete_book/{id}', [BookController::class, 'deleteBookById'])->name('delete.book');
 
-    Route::get('/reservation', [BookController::class, 'reserved'],)->name('reservation');
+    Route::get('/reservation', [BookController::class, 'reservedView'],)->name('reservation');
 });
 
 

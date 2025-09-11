@@ -69,7 +69,7 @@ class BookController extends Controller
         return view('books_bibliotheque', compact('books'));
     }
 
-    public function deleteBookById(string $id)
+    public function deleteBookById(string $id): RedirectResponse
     {
         $book = Book::findOrFail($id);
 
@@ -78,7 +78,7 @@ class BookController extends Controller
         return redirect()->route('books.all');
     }
 
-    public function reserved()
+    public function reservedView(): view
     {
         $books = Book::all();
         return view('reserved_books', compact('books'));
