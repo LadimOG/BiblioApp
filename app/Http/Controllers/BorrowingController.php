@@ -39,20 +39,22 @@ class BorrowingController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'book_id' => 'require|exists:book,id'
+            'book_id' => 'required|exists:books,id'
 
         ]);
 
         $userId = $request->input('user_id');
         $bookId = $request->input('book_id');
-        $dateEmprunt = now();
-        $dateRetour = $dateEmprunt->addMonth();
 
-        Borrowing::created([
+        $bookAvailable = Book::find($bookId);
+
+        dd($bookAvailable);
+
+        Borrowing::create([
             'user_id' => $userId,
             'book_id' => $bookId,
-            'borrowed_ad' => $dateEmprunt,
-            'due_date' => $dateRetour,
+            'borrowed_at' => now(),
+            'due_date' => now()->addMonth(),
         ]);
     }
 
