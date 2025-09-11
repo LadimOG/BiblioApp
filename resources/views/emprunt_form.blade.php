@@ -4,6 +4,13 @@
 
 @section('content')
 <div class="grid grid-cols-1 gap-2 ">
+    @if ($errors->has('error'))
+        <p class="w-full bg-red-300 text-red-700 border border-red-700 p-3">{{ $errors->first('error')}}</p>
+    @endif
+
+    @if (session('success'))
+        <p class="w-full bg-green-300 text-green-700 border border-green-700 p-3">{{session('success')}}</p>
+    @endif
     @foreach ($books as $book)
         <form action="{{ route('emprunt.store') }}" method="post" class="" >
         @csrf

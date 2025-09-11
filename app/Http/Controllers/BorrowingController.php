@@ -46,9 +46,13 @@ class BorrowingController extends Controller
         $userId = $request->input('user_id');
         $bookId = $request->input('book_id');
 
-        $bookAvailable = Book::find($bookId);
+        $bookAvailable = Borrowing::where('book_id', $bookId)->first();
 
-        dd($bookAvailable);
+        if (isset($bookAvailable->book_id)) {
+            return redirect()->back()->withErrors([
+                'error' => "Ce livre est actuellement indisponible !"
+            ]);
+        }
 
         Borrowing::create([
             'user_id' => $userId,
@@ -56,6 +60,8 @@ class BorrowingController extends Controller
             'borrowed_at' => now(),
             'due_date' => now()->addMonth(),
         ]);
+
+        return redirect()->back()->with('success', "L'emprunt à été pris en compte ");
     }
 
     /**

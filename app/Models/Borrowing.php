@@ -12,7 +12,8 @@ class Borrowing extends Model
         'book_id',
         'borrowed_at',
         'due_date',
-        'returned_at'
+        'returned_at',
+        'status'
 
     ];
 
