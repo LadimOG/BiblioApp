@@ -77,10 +77,4 @@ class BookController extends Controller
 
         return redirect()->route('books.all');
     }
-
-    public function reservedView(): view
-    {
-        $books = Book::all();
-        return view('reserved_books', compact('books'));
-    }
 }

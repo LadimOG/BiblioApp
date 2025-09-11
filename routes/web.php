@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\UserController;
+use App\Models\Borrowing;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/delete_book/{id}', [BookController::class, 'deleteBookById'])->name('delete.book');
 
-    Route::get('/reservation', [BookController::class, 'reservedView'],)->name('reservation');
+    Route::get('/emprunt', [BorrowingController::class, 'create'],)->name('emprunt.form');
 });
 
 
