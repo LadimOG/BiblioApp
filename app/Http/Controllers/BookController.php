@@ -31,21 +31,24 @@ class BookController extends Controller
         return redirect()->route('home');
     }
 
-    public function addBook(string $id, Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
 
         $conditionValidated = $request->validate([
             'condition' => 'required|string|in:bon,moyen,mauvais'
+
         ]);
 
-        $bookExisting = Book::where('google_books_id', $id)->exists();
+        $idBook = $request->input('google_book_id');
+
+        $bookExisting = Book::where('google_books_id', $idBook)->exists();
 
         if ($bookExisting) {
             return redirect()->route('home')->with('error', 'Ce livre est présent dans votre bibliothèque !');
         }
 
         try {
-            $bookData = $this->googleBookService->getBookById($id);
+            $bookData = $this->googleBookService->getBookById($idBook);
         } catch (RequestException $e) {
             return redirect()->route('home')->with('error', 'Impossible');
         }
