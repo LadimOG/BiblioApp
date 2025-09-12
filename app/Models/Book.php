@@ -18,7 +18,8 @@ class Book extends Model
         'description',
         'image_url',
         'google_books_id',
-        'condition'
+        'condition',
+        'status'
     ];
 
     public function user(): BelongsTo
