@@ -6,7 +6,7 @@
     <div class="grid grid-cols-[200px_1fr] ">
         <div class="sidebar row-span-3 border-r-2 ">
             <div class="border-b-2 p-4 ">
-                <a href="{{ route('emprunt.form') }}" class="font-bold text-slate-400 underline">Prêt de livre </a>
+                <a href="{{ route('emprunt.create') }}" class="font-bold text-slate-400 underline">Prêt de livre </a>
             </div>
             <div class="border-b-2  p-4">
                 <a href="" class="font-bold text-slate-400 underline">Livre en cours de prêt</a>

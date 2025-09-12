@@ -25,11 +25,12 @@ class BorrowingController extends Controller
     public function create()
     {
 
-        $userConnect = Auth::id();
-        $users = User::select('id', 'name')->where('id', '!=', $userConnect)->get();
 
+        $users = User::select('id', 'name')->where('id', '!=', Auth::id())->get();
+        $statusBook = Borrowing::select('status')->first();
         $books = Book::all();
-        return view('emprunt_form', compact('books', 'users'));
+
+        return view('emprunt_form', compact('books', 'users', 'statusBook'));
     }
 
     /**

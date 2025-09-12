@@ -37,7 +37,9 @@
                     </select>
                 </div>
 
-                <button type="submit" class="bg-blue-600 p-4 h-full rounded-r-lg">Valider</button>
+
+                <button type="submit" class="bg-blue-600 p-4 h-full rounded-r-lg" >Valider</button>
+
             </div>
         </div>
         </form>
