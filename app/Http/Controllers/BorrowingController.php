@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BorrowingController extends Controller
 {
@@ -44,23 +45,22 @@ class BorrowingController extends Controller
 
         ]);
 
-        $userId = $request->input('user_id');
-        $bookId = $request->input('book_id');
+        $book = Book::find($request->input('book_id'));
 
-        $bookAvailable = Borrowing::where('book_id', $bookId)->first();
-
-        if (isset($bookAvailable->book_id)) {
-            return redirect()->back()->withErrors([
-                'error' => "Ce livre est actuellement indisponible !"
-            ]);
+        if ($book->status === 'borrowed') {
+            return redirect()->back()->withErrors(['error' => 'Livre déja emprunté']);
         }
 
-        Borrowing::create([
-            'user_id' => $userId,
-            'book_id' => $bookId,
-            'borrowed_at' => now(),
-            'due_date' => now()->addMonth(),
-        ]);
+        DB::transaction(function () use ($book, $request) {
+            Borrowing::create([
+                'user_id' => $request->input('user_id'),
+                'book_id' => $book->id,
+                'borrowed_at' => now(),
+                'due_date' => now()->addMonth(),
+            ]);
+        });
+
+        $book->update(['status' => 'borrowed']);
 
         return redirect()->back()->with('success', "L'emprunt à été pris en compte ");
     }
