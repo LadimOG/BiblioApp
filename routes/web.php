@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/emprunt', [BorrowingController::class, 'create'])->name('emprunt.create');
 
     Route::post('/emprunt', [BorrowingController::class, 'store'])->name('emprunt.store');
+
+    Route::post('emprunt-list', [BorrowingController::class, 'index'])->name('emprunt.index');
 });
 
 
