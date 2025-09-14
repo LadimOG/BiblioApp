@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class BorrowingController extends Controller
@@ -17,7 +18,10 @@ class BorrowingController extends Controller
      */
     public function index()
     {
-        //
+
+        $borrowings = Borrowing::with(['user', 'book'])->get();
+
+        return view('emprunt_list', compact('borrowings'));
     }
 
     /**
@@ -25,13 +29,11 @@ class BorrowingController extends Controller
      */
     public function create()
     {
-
-
         $users = User::select('id', 'name')->where('id', '!=', Auth::id())->get();
-        $statusBook = Borrowing::select('status')->first();
+
         $books = Book::all();
 
-        return view('emprunt_form', compact('books', 'users', 'statusBook'));
+        return view('emprunt_form', compact('books', 'users',));
     }
 
     /**
@@ -45,24 +47,27 @@ class BorrowingController extends Controller
 
         ]);
 
-        $book = Book::find($request->input('book_id'));
+        $book = Book::findOrFail($request->input('book_id'));
 
         if ($book->status === 'borrowed') {
             return redirect()->back()->withErrors(['error' => 'Livre déja emprunté']);
         }
 
-        DB::transaction(function () use ($book, $request) {
-            Borrowing::create([
-                'user_id' => $request->input('user_id'),
-                'book_id' => $book->id,
-                'borrowed_at' => now(),
-                'due_date' => now()->addMonth(),
-            ]);
-        });
+        try {
+            DB::transaction(function () use ($book, $request) {
+                Borrowing::create([
+                    'user_id' => $request->input('user_id'),
+                    'book_id' => $book->id,
+                    'borrowed_at' => now(),
+                    'due_date' => now()->addMonth(),
+                ]);
+                $book->update(['status' => 'borrowed']);
+            });
 
-        $book->update(['status' => 'borrowed']);
-
-        return redirect()->back()->with('success', "L'emprunt à été pris en compte ");
+            return redirect()->back()->with('success', "L'emprunt à été pris en compte ");
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => "une erreur est survenue lors de l'enregistrement de l'emprunt"]);
+        }
     }
 
     /**

@@ -9,7 +9,7 @@
                 <a href="{{ route('emprunt.create') }}" class="font-bold text-slate-400 underline">Prêt de livre </a>
             </div>
             <div class="border-b-2  p-4">
-                <a href="" class="font-bold text-slate-400 underline">Livre en cours de prêt</a>
+                <a href="{{ route('emprunt.index') }}" class="font-bold text-slate-400 underline">Livre en cours de prêt</a>
             </div>
         </div>
         <div class="content">
