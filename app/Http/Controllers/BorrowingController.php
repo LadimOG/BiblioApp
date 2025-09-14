@@ -19,7 +19,7 @@ class BorrowingController extends Controller
     public function index()
     {
 
-        $borrowings = Borrowing::with(['user', 'book'])->get();
+        $borrowings = Borrowing::with(['user', 'book'])->where('status', 'pending')->get();
 
         return view('emprunt_list', compact('borrowings'));
     }
@@ -91,7 +91,26 @@ class BorrowingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'id' => 'required|exists:borrowings,id',
+        ]);
+
+        $borrowing = Borrowing::with('book')->findOrFail($id);
+
+        try {
+            DB::transaction(function () use ($borrowing) {
+                $borrowing->update([
+                    'status' => 'returned',
+                    'returned_at' => now()
+                ]);
+                $borrowing->book->update([
+                    'status' => 'available'
+                ]);
+            });
+            return redirect()->back()->with('success', 'Le livre est rendu');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Problème de mise à jours du dépot de livre !']);
+        }
     }
 
     /**
