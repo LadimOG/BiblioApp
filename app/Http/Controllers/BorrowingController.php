@@ -60,6 +60,7 @@ class BorrowingController extends Controller
                     'book_id' => $book->id,
                     'borrowed_at' => now(),
                     'due_date' => now()->addMonth(),
+                    'returned_at' => ''
                 ]);
                 $book->update(['status' => 'borrowed']);
             });
