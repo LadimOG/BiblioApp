@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\User;
+use App\Services\BorrowingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 class BorrowingController extends Controller
 {
+
+    protected $borrowingService;
+
+    public function __construct(BorrowingService $borrowingService)
+    {
+        $this->borrowingService = $borrowingService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -47,27 +56,12 @@ class BorrowingController extends Controller
 
         ]);
 
-        $book = Book::findOrFail($request->input('book_id'));
-
-        if ($book->status === 'borrowed') {
-            return redirect()->back()->withErrors(['error' => 'Livre déja emprunté']);
-        }
-
         try {
-            DB::transaction(function () use ($book, $request) {
-                Borrowing::create([
-                    'user_id' => $request->input('user_id'),
-                    'book_id' => $book->id,
-                    'borrowed_at' => now(),
-                    'due_date' => now()->addMonth(),
-                    'returned_at' => ''
-                ]);
-                $book->update(['status' => 'borrowed']);
-            });
+            $this->borrowingService->storeBorrowing($request->input('user_id'), $request->input('book_id'));
 
-            return redirect()->back()->with('success', "L'emprunt à été pris en compte ");
+            return redirect()->back()->with('success', "l'emprunt a bien été pris en compte");
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => "une erreur est survenue lors de l'enregistrement de l'emprunt"]);
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -92,25 +86,12 @@ class BorrowingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'id' => 'required|exists:borrowings,id',
-        ]);
-
-        $borrowing = Borrowing::with('book')->findOrFail($id);
 
         try {
-            DB::transaction(function () use ($borrowing) {
-                $borrowing->update([
-                    'status' => 'returned',
-                    'returned_at' => now()
-                ]);
-                $borrowing->book->update([
-                    'status' => 'available'
-                ]);
-            });
+            $this->borrowingService->updateBorrowing($id);
             return redirect()->back()->with('success', 'Le livre est rendu');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Problème de mise à jours du dépot de livre !']);
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
