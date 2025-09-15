@@ -23,7 +23,7 @@
                     <div class=" cursor-pointer bg-slate-800 rounded-md hover:bg-slate-700 p-4 mx-2">
                         <div class="bg-black   rounded-md h-44 flex justify-center items-center justify-items-center">
                             @if (isset($book->image_url))
-                              <img src="{{$book->image_url}}" alt="image couverture" class=""  >
+                              <img src="{{$book->image_url}}" alt="image couverture" width="100px" >
                             @else
                             <p class="text-gray-300">image non disponible</p>
                             @endif
@@ -55,14 +55,15 @@
                         </div>
                     </div>
                     @endforeach
+
                 @else
                     <div class="flex justify-center items-center">
                         <p class="text-red-500 text-2xl">Aucun livre enregistré dans votre bibliothèque !</p>
                     </div>
-
                 @endif
             </div>
 
+                {{ $books->links('vendor.pagination.tailwind') }}
         </div>
     </div>
         @endsection
