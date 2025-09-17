@@ -22,7 +22,13 @@ class GoogleBooksService
             'query' => ['q' => $query]
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        if ($response->getStatusCode() === 200) {
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        }
+        return [];
     }
 
     public function getBookById(string $id)

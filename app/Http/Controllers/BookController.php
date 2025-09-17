@@ -7,7 +7,7 @@ use App\Services\GoogleBooksService;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+
 
 class BookController extends Controller
 {
@@ -26,6 +26,7 @@ class BookController extends Controller
 
         if ($query) {
             $books = $this->googleBookService->searchBooks($query);
+
             return view('bookFind', compact('books', 'query'));
         }
         return redirect()->route('home');
@@ -37,16 +38,12 @@ class BookController extends Controller
         return view('books_bibliotheque', compact('books'));
     }
 
-    public function store(Request $request)
+    public function store($id)
     {
 
 
-        $conditionValidated = $request->validate([
-            'condition' => 'required|string|in:bon,moyen,mauvais'
+        $idBook = $id;
 
-        ]);
-
-        $idBook = $request->input('google_book_id');
 
         $bookExisting = Book::where('google_books_id', $idBook)->exists();
 
@@ -69,7 +66,7 @@ class BookController extends Controller
             'description' => strip_tags($bookData['volumeInfo']['description'] ?? null),
             'image_url' => $bookData['volumeInfo']['imageLinks']['smallThumbnail'] ?? null,
             'google_books_id' => $bookData['id'],
-            'condition' => $conditionValidated['condition']
+
         ]);
 
         return redirect()->back()->with('success', 'Livre ajouté avec succès !');

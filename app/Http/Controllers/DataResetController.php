@@ -13,4 +13,11 @@ class DataResetController extends Controller
 
         return "La table a été vider !!!";
     }
+
+    public function dropColumn()
+    {
+        DB::table('books')->dropColumn('condition');
+
+        return "la column a été suprimer";
+    }
 }

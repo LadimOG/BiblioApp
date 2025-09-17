@@ -17,9 +17,9 @@ Route::get('/search-book', [BookController::class, 'index'])->name('index.books'
 
 Route::middleware('auth')->group(function () {
 
-    //Route::get('/drop-table', [DataResetController::class, 'reset']);
+    // Route::get('/drop-table', [DataResetController::class, 'dropColumn']);
 
-    Route::post('/livre', [BookController::class, 'store'])->name('book.store');
+    Route::get('/livre/{id}', [BookController::class, 'store'])->name('book.store');
 
     Route::get('/livres', [BookController::class, 'showBooks'])->name('books.all');
 
