@@ -18,16 +18,18 @@ class GoogleBooksService
 
     public function searchBooks(string $query)
     {
-        $response = $this->client->request('GET', 'volumes', [
-            'query' => ['q' => $query]
-        ]);
+        try {
+            $response = $this->client->request('GET', 'volumes', [
+                'query' => ['q' => $query]
+            ]);
 
-        if ($response->getStatusCode() === 200) {
-
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            return ['item' => []];
         }
+
+
+
         return [];
     }
 

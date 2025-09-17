@@ -40,10 +40,7 @@ class BookController extends Controller
 
     public function store($id)
     {
-
-
         $idBook = $id;
-
 
         $bookExisting = Book::where('google_books_id', $idBook)->exists();
 

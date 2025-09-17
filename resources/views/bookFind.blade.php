@@ -19,7 +19,14 @@
 
         <div class=" grid items-stretch grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 p-4">
             @foreach ($books['items'] as $book)
-            <x-card :book="$book"/>
+            <x-card :image="$book['volumeInfo']['imageLinks']['thumbnail'] ?? '' "
+            :title="$book['volumeInfo']['title'] ?? 'Titre indisponible' "
+            :description="substr($book['volumeInfo']['description'] ?? 'Aucune description', 0, 30) . '...' "
+            :author="implode(', ', $book['volumeInfo']['authors'] ?? []) "
+            :published="substr($book['volumeInfo']['publishedDate'] ?? 'N/A', 0, 4) "
+
+            :action="route('book.store', ['id' => $book['id']])"
+            />
             @endforeach
         </div>
     @else

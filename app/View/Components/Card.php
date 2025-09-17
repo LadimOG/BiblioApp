@@ -12,7 +12,12 @@ class Card extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public array $book
+        public $image,
+        public string $title,
+        public string $description,
+        public ?string $author,
+        public string $published,
+
     ) {
         //
     }

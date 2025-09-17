@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('/drop-table', [DataResetController::class, 'dropColumn']);
 
-    Route::get('/livre/{id}', [BookController::class, 'store'])->name('book.store');
+    Route::post('/livre/{id}', [BookController::class, 'store'])->name('book.store');
 
     Route::get('/livres', [BookController::class, 'showBooks'])->name('books.all');
 
